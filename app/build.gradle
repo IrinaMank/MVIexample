@@ -152,4 +152,5 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:2.1.6"
     // Testing
     testImplementation "org.koin:koin-test:2.1.6"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta8'
 }

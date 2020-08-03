@@ -1,18 +1,19 @@
 package com.mankovskaya.mviexample.model.feature
 
-import com.mankovskaya.mviexample.model.base.Action
-import com.mankovskaya.mviexample.model.base.BaseViewModel
-import com.mankovskaya.mviexample.model.base.State
-import com.mankovskaya.mviexample.model.base.StateReducer
+import com.mankovskaya.mviexample.model.base.*
 import com.mankovskaya.mviexample.model.mock.AuthMockService
+import com.mankovskaya.mviexample.ui.widget.ErrorState
+import com.mankovskaya.mviexample.ui.widget.StateAction
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 data class LoginState(
     val email: String?,
-    val password: String?,
-    val loading: Boolean,
-    val error: String?
+    val password: String?
 ) : State
+
+sealed class LoginEvent : Event {
+    data class Toast(val message: String) : LoginEvent()
+}
 
 sealed class LoginAction : Action {
     data class EmailChanged(val email: String) : LoginAction()
@@ -23,11 +24,9 @@ sealed class LoginAction : Action {
 }
 
 class LoginViewModel(private val authMockService: AuthMockService) :
-    BaseViewModel<LoginState, LoginAction>(
+    BaseStatefulViewModel<LoginState, LoginAction, LoginEvent>(
         LoginState(
             "first email",
-            null,
-            false,
             null
         )
     ) {
@@ -43,30 +42,43 @@ class LoginViewModel(private val authMockService: AuthMockService) :
                     state.copy(password = action.password)
                 }
                 is LoginAction.Login -> {
-                    authMockService
-                        .login(state.email, state.password)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                            {
-                                reactOnAction(LoginAction.SuccessfulLogin)
-                            }, {
-                                reactOnAction(
-                                    LoginAction.LoginError(
-                                        it.localizedMessage ?: "Error"
-                                    )
-                                )
-                            }
-                        )
-                    state.copy(loading = true)
+                    login(state.email, state.password)
+                    sendStateAction(StateAction.ProgressStarted)
+                    state
                 }
                 is LoginAction.SuccessfulLogin -> {
-                    state.copy(loading = false).also { navigateNext() }
+                    sendStateAction(StateAction.ProgressSuccess)
+                    state.also { navigateNext() }
                 }
                 is LoginAction.LoginError -> {
-                    state.copy(loading = false, error = action.error)
+                    //liveEvent.postValue(LoginEvent.Toast("Error sdksdskd"))
+                    sendStateAction(StateAction.ErrorOccurred(ErrorState(action.error) {
+                        login(
+                            state.email,
+                            state.password
+                        )
+                    }))
+                    state
                 }
             }
         }
+    }
+
+    private fun login(email: String?, password: String?) {
+        authMockService
+            .login(email, password)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    reactOnAction(LoginAction.SuccessfulLogin)
+                }, {
+                    reactOnAction(
+                        LoginAction.LoginError(
+                            it.localizedMessage ?: "Error"
+                        )
+                    )
+                }
+            )
     }
 
     private fun navigateNext() {
