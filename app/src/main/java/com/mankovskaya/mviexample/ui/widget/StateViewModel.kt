@@ -22,7 +22,7 @@ sealed class StateAction : Action {
     object ButtonClicked : StateAction()
 }
 
-class StateViewModel : BaseViewModel<ProgressState, StateAction, Nothing>(
+class StateViewModel : BaseViewModel<ProgressState, StateAction, Unit>(
     ProgressState(false, null)
 ) {
     override val stateReducer: StateReducer<ProgressState, StateAction> = ProgressStateReducer()

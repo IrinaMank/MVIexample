@@ -10,7 +10,7 @@ abstract class BaseViewModel<State, Action, Event>(
     private val initialState: State
 ) : ViewModel() {
     private val stateRelay: MutableLiveData<State> = MutableLiveData(initialState)
-    abstract val stateReducer: StateReducer<State, Action>
+    protected abstract val stateReducer: StateReducer<State, Action>
     val liveEvent = LiveEvent<Event>()
 
     fun getStateRelay(): LiveData<State> = stateRelay
@@ -19,7 +19,7 @@ abstract class BaseViewModel<State, Action, Event>(
         stateRelay.value = stateReducer.reduce(stateRelay.value ?: initialState, action)
     }
 
-    fun postEvent(event: Event) {
+    protected fun postEvent(event: Event) {
         liveEvent.postValue(event)
     }
 
