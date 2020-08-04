@@ -10,7 +10,7 @@ ext.versions = [
         androidXAppCompat   : "1.1.0",
         androidXRecycler    : "1.0.0",
         androidXCardView    : "1.0.0",
-        androidXDesign      : "1.0.0",
+        androidXDesign      : "1.0.0-alpha04",
         androidXAnnotation  : "1.1.0",
         androidXKtx         : "1.1.0",
         multidex            : "2.0.1",

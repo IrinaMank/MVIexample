@@ -6,6 +6,7 @@
 
         <import type="android.view.View" />
 
+        <import type="com.google.android.material.textfield.TextInputLayout" />
         <import type="com.mankovskaya.mviexample.model.feature.LoginAction" />
 
         <variable
@@ -21,50 +22,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/nameLabelTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/nameEditText"
-            android:layout_centerHorizontal="true"
-            android:text="Enter your name:" />
-
-        <EditText
-            android:id="@+id/nameEditText"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@{viewModel.stateRelay.email}" />
+            android:hint="@string/login_email_hint"
+            android:padding="8dp"
+            app:endIconMode="clear_text"
+            app:errorEnabled="@{viewModel.stateRelay.emailError != null }"
+            app:errorText="@{viewModel.stateRelay.emailError}">
 
-        <TextView
-            android:id="@+id/passwordLabelTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nameEditText"
-            android:layout_centerHorizontal="true"
-            android:text="Enter your password:" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="@{viewModel.stateRelay.email}"
+                tools:text="email@email.com" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/passwordEditText"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/passwordLabelTextView"
-            android:text="@{viewModel.stateRelay.password}" />
+            android:layout_below="@id/emailInputLayout"
+            android:hint="@string/login_password_hint"
+            app:endIconMode="password_toggle">
 
-        <TextView
-            android:id="@+id/labelView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/passwordEditText"
-            android:layout_centerHorizontal="true"
-            tools:text="Some text"
-            tools:visibility="invisible" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:inputType="textPassword"
+                android:text="@{viewModel.stateRelay.password}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/labelView"
+            android:layout_below="@id/passwordInputLayout"
             android:layout_centerHorizontal="true"
             android:stateListAnimator="@null"
             android:text="Login" />

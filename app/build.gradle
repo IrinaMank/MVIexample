@@ -81,7 +81,7 @@ dependencies {
     implementation lib.androidXCoreKtx
     implementation lib.androidXRecyclerView
     implementation lib.androidXCardView
-    implementation lib.androidXDesign
+    implementation "com.google.android.material:material:1.1.0"
     implementation lib.androidXMultiDex
 
     /* Logger */

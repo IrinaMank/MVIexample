@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.observe
+import com.google.android.material.textfield.TextInputLayout
 import com.mankovskaya.mviexample.R
 import com.mankovskaya.mviexample.databinding.FragmentLoginBinding
 import com.mankovskaya.mviexample.model.feature.LoginAction
@@ -34,7 +36,12 @@ class LoginFragment : Fragment() {
         binding.viewModel = loginViewModel
         binding.stateViewModel = loginViewModel.stateViewModel
         binding.loginButton.setOnClickListener { loginViewModel.reactOnAction(LoginAction.Login) }
-        binding.nameEditText.doOnTextChanged { text, _, _, _ ->
+        binding.emailEditText.setOnFocusChangeListener { _, isFocused ->
+            if (!isFocused) {
+                loginViewModel.reactOnAction(LoginAction.EmailInputFinished)
+            }
+        }
+        binding.emailEditText.doOnTextChanged { text, _, _, _ ->
             loginViewModel.reactOnAction(LoginAction.EmailChanged(text?.toString() ?: ""))
         }
         binding.passwordEditText.doOnTextChanged { text, _, _, _ ->
@@ -50,4 +57,9 @@ class LoginFragment : Fragment() {
         return view
     }
 
+}
+
+@BindingAdapter("app:errorText")
+fun setErrorMessage(view: TextInputLayout, errorMessage: String?) {
+    view.error = errorMessage
 }

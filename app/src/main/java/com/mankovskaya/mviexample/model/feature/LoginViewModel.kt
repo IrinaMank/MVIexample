@@ -8,6 +8,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 
 data class LoginState(
     val email: String?,
+    val emailError: String?,
+    val emailCorrect: Boolean,
     val password: String?
 ) : State
 
@@ -17,6 +19,7 @@ sealed class LoginEvent : Event {
 
 sealed class LoginAction : Action {
     data class EmailChanged(val email: String) : LoginAction()
+    object EmailInputFinished : LoginAction()
     data class PasswordChanged(val password: String) : LoginAction()
     object Login : LoginAction()
     object SuccessfulLogin : LoginAction()
@@ -27,6 +30,8 @@ class LoginViewModel(private val authMockService: AuthMockService) :
     BaseStatefulViewModel<LoginState, LoginAction, LoginEvent>(
         LoginState(
             "first email",
+            null,
+            false,
             null
         )
     ) {
@@ -36,7 +41,11 @@ class LoginViewModel(private val authMockService: AuthMockService) :
         override fun reduce(state: LoginState, action: LoginAction): LoginState {
             return when (action) {
                 is LoginAction.EmailChanged -> {
-                    state.copy(email = action.email)
+                    state.copy(email = action.email, emailError = null, emailCorrect = false)
+                }
+                is LoginAction.EmailInputFinished -> {
+                    //state.copy(emailError = "Please insert correct email", emailCorrect = false)
+                    state.copy(emailCorrect = true, emailError = null)
                 }
                 is LoginAction.PasswordChanged -> {
                     state.copy(password = action.password)
