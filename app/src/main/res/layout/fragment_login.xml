@@ -18,60 +18,71 @@
             type="com.mankovskaya.mviexample.model.feature.LoginViewModel" />
     </data>
 
-    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:hint="@string/login_email_hint"
-            android:padding="8dp"
-            app:endIconMode="clear_text"
-            app:errorEnabled="@{viewModel.stateRelay.emailError != null }"
-            app:errorText="@{viewModel.stateRelay.emailError}">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:text="@{viewModel.stateRelay.email}"
-                tools:text="email@email.com" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/emailInputLayout"
-            android:hint="@string/login_password_hint"
-            app:endIconMode="password_toggle">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:inputType="textPassword"
-                android:text="@{viewModel.stateRelay.password}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/loginButton"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/passwordInputLayout"
-            android:layout_centerHorizontal="true"
-            android:stateListAnimator="@null"
-            android:text="Login" />
+            android:layout_gravity="center">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:hint="@string/login_email_hint"
+                android:padding="@dimen/size_small"
+                app:endIconMode="clear_text"
+                app:errorEnabled="@{viewModel.stateRelay.emailError != null }"
+                app:errorText="@{viewModel.stateRelay.emailError}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inconsolata_regular"
+                    android:inputType="textEmailAddress"
+                    android:text="@{viewModel.stateRelay.email}"
+                    tools:text="email@email.com" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailInputLayout"
+                android:hint="@string/login_password_hint"
+                android:padding="@dimen/size_small"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inconsolata_regular"
+                    android:inputType="textPassword"
+                    android:text="@{viewModel.stateRelay.password}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passwordInputLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_small"
+                android:stateListAnimator="@null"
+                android:text="Login" />
+
+        </RelativeLayout>
 
         <com.mankovskaya.mviexample.ui.widget.StateView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:viewModel="@{stateViewModel}" />
-    </RelativeLayout>
+    </FrameLayout>
+
 </layout>

@@ -8,20 +8,18 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.observe
 import com.google.android.material.textfield.TextInputLayout
 import com.mankovskaya.mviexample.R
 import com.mankovskaya.mviexample.databinding.FragmentLoginBinding
+import com.mankovskaya.mviexample.model.base.BaseFragment
 import com.mankovskaya.mviexample.model.feature.LoginAction
 import com.mankovskaya.mviexample.model.feature.LoginEvent
 import com.mankovskaya.mviexample.model.feature.LoginViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class LoginFragment : Fragment() {
-    private val loginViewModel: LoginViewModel by viewModel()
+class LoginFragment : BaseFragment<LoginViewModel>() {
+    override val fragmentViewModel: LoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,22 +30,24 @@ class LoginFragment : Fragment() {
             inflater, R.layout.fragment_login, container, false
         )
         val view: View = binding.root
-        binding.lifecycleOwner = this
-        binding.viewModel = loginViewModel
-        binding.stateViewModel = loginViewModel.stateViewModel
-        binding.loginButton.setOnClickListener { loginViewModel.reactOnAction(LoginAction.Login) }
-        binding.emailEditText.setOnFocusChangeListener { _, isFocused ->
-            if (!isFocused) {
-                loginViewModel.reactOnAction(LoginAction.EmailInputFinished)
+        with(binding) {
+            lifecycleOwner = this@LoginFragment
+            viewModel = fragmentViewModel
+            stateViewModel = fragmentViewModel.stateViewModel
+            loginButton.setOnClickListener { fragmentViewModel.reactOnAction(LoginAction.Login) }
+            emailEditText.setOnFocusChangeListener { _, isFocused ->
+                if (!isFocused) {
+                    fragmentViewModel.reactOnAction(LoginAction.EmailInputFinished)
+                }
+            }
+            emailEditText.doOnTextChanged { text, _, _, _ ->
+                fragmentViewModel.reactOnAction(LoginAction.EmailChanged(text?.toString() ?: ""))
+            }
+            passwordEditText.doOnTextChanged { text, _, _, _ ->
+                fragmentViewModel.reactOnAction(LoginAction.PasswordChanged(text?.toString() ?: ""))
             }
         }
-        binding.emailEditText.doOnTextChanged { text, _, _, _ ->
-            loginViewModel.reactOnAction(LoginAction.EmailChanged(text?.toString() ?: ""))
-        }
-        binding.passwordEditText.doOnTextChanged { text, _, _, _ ->
-            loginViewModel.reactOnAction(LoginAction.PasswordChanged(text?.toString() ?: ""))
-        }
-        loginViewModel.liveEvent.observe(requireContext() as LifecycleOwner) { event ->
+        listenToEvents { event ->
             when (event) {
                 is LoginEvent.Toast -> {
                     Toast.makeText(requireContext(), event.message, Toast.LENGTH_LONG).show()

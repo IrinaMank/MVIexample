@@ -5,5 +5,16 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="android:textViewStyle">@style/InconsolataTextViewStyle</item>
+        <item name="textAppearanceButton">@style/InconsolataButtonStyle</item>
     </style>
+
+    <style name="InconsolataTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/inconsolata_regular</item>
+    </style>
+
+    <style name="InconsolataButtonStyle" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/inconsolata_regular</item>
+    </style>
+
 </resources>

@@ -3,17 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/size_medium">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome" />
+        android:padding="@dimen/size_large"
+        android:text="Welcome!" />
 
     <Button
-        android:id="@+id/nextButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next" />
+        android:text="login" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="registration" />
 
 </LinearLayout>
