@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankovskaya.mviexample.R
 import com.mankovskaya.mviexample.databinding.FragmentChatBinding
 import com.mankovskaya.mviexample.model.base.BaseFragment
+import com.mankovskaya.mviexample.model.feature.ChatAction
 import com.mankovskaya.mviexample.model.feature.ChatState
 import com.mankovskaya.mviexample.model.feature.ChatViewModel
-import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.android.synthetic.main.item_message_field.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -35,20 +37,29 @@ class ChatFragment : BaseFragment<ChatViewModel>() {
             lifecycleOwner = this@ChatFragment
             viewModel = fragmentViewModel
             stateViewModel = fragmentViewModel.stateViewModel
+            val layoutManager = LinearLayoutManager(requireContext()).apply {
+                stackFromEnd = true
+            }
+            chatRecyclerView.layoutManager = layoutManager
+            chatRecyclerView.adapter = adapter
+            chatRecyclerView.itemAnimator = DefaultItemAnimator()
             fragmentViewModel.getStateRelay().observe(this@ChatFragment as LifecycleOwner,
                 Observer<ChatState> {
-                    adapter.addItems(it.messages, true)
+                    adapter.setItems(it.messages, true)
+                    if (it.shouldScrollToEnd) {
+                        layoutManager.scrollToPosition(adapter.itemCount - 1)
+                    }
                 })
+            fieldLayout.sendButton.setOnClickListener {
+                fragmentViewModel.reactOnAction(
+                    ChatAction.MessageSent(
+                        fieldLayout.fieldEditText.text?.toString() ?: ""
+                    )
+                )
+                fieldLayout.fieldEditText.setText("")
+            }
         }
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val layoutManager = LinearLayoutManager(requireContext()).apply {
-            stackFromEnd = true
-        }
-        chatRecyclerView.layoutManager = layoutManager
-        chatRecyclerView.adapter = adapter
-    }
 }

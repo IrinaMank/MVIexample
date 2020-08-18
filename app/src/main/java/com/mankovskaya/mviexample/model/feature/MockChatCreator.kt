@@ -1,6 +1,7 @@
 package com.mankovskaya.mviexample.model.feature
 
 import org.joda.time.DateTime
+import java.util.*
 import kotlin.random.Random
 
 class MockChatCreator {
@@ -9,7 +10,8 @@ class MockChatCreator {
         return generateSequence {
             Message.TextMessage(
                 getRandomString(Random.nextInt(100)),
-                DateTime.now().plusMinutes(Random.nextInt(0, 100))
+                DateTime.now().plusMinutes(Random.nextInt(0, 100)),
+                UUID.randomUUID().toString()
             )
         }.take(count).toList()
     }

@@ -5,72 +5,83 @@ import com.mankovskaya.mviexample.model.base.State
 import com.mankovskaya.mviexample.model.base.StateReducer
 import org.joda.time.DateTime
 import org.joda.time.Minutes
+import java.util.*
 
 
-sealed class Message {
+sealed class Message(open val id: String) {
     data class TextMessage(
         val text: String,
-        val time: DateTime
-    ) : Message()
+        val time: DateTime,
+        override val id: String
+    ) : Message(id)
 
-    data class DateMessage(val date: DateTime) : Message()
+    data class DateMessage(val date: DateTime, override val id: String) : Message(id)
 }
 
 data class ChatState(
-    val messages: List<Message>
+    val messages: List<Message>,
+    val shouldScrollToEnd: Boolean
 ) : State
+
+sealed class ChatAction {
+    data class MessageSent(val text: String) : ChatAction()
+}
 
 class ChatViewModel(
     private val mockChatCreator: MockChatCreator
 ) :
-    BaseStatefulViewModel<ChatState, Unit, Unit>(
+    BaseStatefulViewModel<ChatState, ChatAction, Unit>(
         ChatState(
-            mockChatCreator.getTextMessages(50).sortedBy { it.time }.mapMessages()
+            mockChatCreator.getTextMessages(2).sortedBy { it.time }.mapMessages(),
+            false
         )
     ) {
     override val stateReducer = ChatReducer()
 
-    inner class ChatReducer : StateReducer<ChatState, Unit>() {
-        override fun reduce(state: ChatState, action: Unit): ChatState {
-            return state
+    inner class ChatReducer : StateReducer<ChatState, ChatAction>() {
+        override fun reduce(state: ChatState, action: ChatAction): ChatState {
+            return when (action) {
+                is ChatAction.MessageSent -> {
+                    state.copy(
+                        messages = state.messages.addMessage(action.text),
+                        shouldScrollToEnd = true
+                    )
+                }
+            }
         }
 
     }
 
 }
-
-fun List<Message.TextMessage>.dkfj(): Map<DateTime, List<Message.TextMessage>> {
-    val hashMap = mutableMapOf<DateTime, MutableList<Message.TextMessage>>()
-    if (isEmpty()) return hashMapOf()
-    var previousMessageDateTime: DateTime = this[0].time
-    hashMap[previousMessageDateTime] = mutableListOf(this[0])
-    this.drop(1).forEach { message ->
-        if (Minutes.minutesBetween(previousMessageDateTime, message.time).minutes > 60) {
-            hashMap[message.time] = mutableListOf(message)
-            previousMessageDateTime = message.time
-        } else {
-            hashMap[previousMessageDateTime]?.add(message)
-        }
-    }
-    return hashMap
-
-}
-
 
 fun List<Message.TextMessage>.mapMessages(): List<Message> {
     val result = mutableListOf<Message>()
     if (isEmpty()) return mutableListOf()
     var previousMessageDateTime: DateTime = this[0].time
-    result.add(Message.DateMessage(previousMessageDateTime))
+    result.add(Message.DateMessage(previousMessageDateTime, UUID.randomUUID().toString()))
     result.add(this[0])
     this.drop(1).forEach { message ->
         if (Minutes.minutesBetween(previousMessageDateTime, message.time).minutes > 60) {
-            result.add(Message.DateMessage(message.time))
+            result.add(Message.DateMessage(message.time, UUID.randomUUID().toString()))
             result.add(message)
             previousMessageDateTime = message.time
         } else {
             result.add(message)
         }
+    }
+    return result
+}
+
+fun List<Message>.addMessage(text: String): List<Message> {
+    val message = Message.TextMessage(text, DateTime.now(), UUID.randomUUID().toString())
+    val last = this.lastOrNull { it is Message.TextMessage } as? Message.TextMessage
+        ?: return listOf(message)
+    val result = this.toMutableList()
+    if (Minutes.minutesBetween(last.time, message.time).minutes > 60) {
+        result.add(Message.DateMessage(message.time, UUID.randomUUID().toString()))
+        result.add(message)
+    } else {
+        result.add(message)
     }
     return result
 }
