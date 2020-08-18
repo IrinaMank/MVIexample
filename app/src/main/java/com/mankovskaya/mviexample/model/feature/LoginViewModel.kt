@@ -29,7 +29,7 @@ sealed class LoginAction : Action {
 class LoginViewModel(private val authMockService: AuthMockService) :
     BaseStatefulViewModel<LoginState, LoginAction, LoginEvent>(
         LoginState(
-            "first email",
+            null,
             null,
             false,
             null
@@ -87,7 +87,7 @@ class LoginViewModel(private val authMockService: AuthMockService) :
                         )
                     )
                 }
-            )
+            ).subscribeUntilDestroy()
     }
 
     private fun navigateNext() {

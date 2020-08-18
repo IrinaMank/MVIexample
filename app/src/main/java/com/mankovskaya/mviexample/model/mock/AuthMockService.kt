@@ -9,4 +9,8 @@ class AuthMockService {
         return Completable.complete().delay(5, TimeUnit.SECONDS)
         //return Completable.error(Throwable(message = "Message string")).delay(5, TimeUnit.SECONDS)
     }
+
+    fun signUp(email: String, password: String): Completable {
+        return Completable.complete().delay(5, TimeUnit.SECONDS)
+    }
 }
