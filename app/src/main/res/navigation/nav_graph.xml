@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_welcomeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 
     <fragment
@@ -20,4 +23,10 @@
         android:name="com.mankovskaya.mviexample.ui.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.mankovskaya.mviexample.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

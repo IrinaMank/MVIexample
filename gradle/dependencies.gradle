@@ -57,7 +57,7 @@ ext.lib = [
         androidXCoreKtx          : "androidx.core:core-ktx:$versions.androidXKtx",
         androidXAppCompat        : "androidx.appcompat:appcompat:$versions.androidXAppCompat",
 
-        androidXRecyclerView     : "androidx.recyclerview:recyclerview:$versions.androidXRecycler",
+        androidXRecyclerView     : "androidx.recyclerview:recyclerview:1.1.0",
         androidXCardView         : "androidx.cardview:cardview:$versions.androidXCardView",
         androidXDesign           : "com.google.android.material:material:$versions.androidXDesign",
         androidXMultiDex         : "androidx.multidex:multidex:$versions.multidex",
