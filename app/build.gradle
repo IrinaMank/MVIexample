@@ -153,4 +153,6 @@ dependencies {
     // Testing
     testImplementation "org.koin:koin-test:2.1.6"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta8'
+
+    implementation "androidx.paging:paging-runtime:2.1.2" // For Kotlin use paging-runtime-ktx
 }

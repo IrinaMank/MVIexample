@@ -10,6 +10,7 @@ import java.util.*
 
 sealed class Message(open val id: String) {
     data class TextMessage(
+        val isMine: Boolean,
         val text: String,
         val time: DateTime,
         override val id: String
@@ -17,6 +18,11 @@ sealed class Message(open val id: String) {
 
     data class DateMessage(val date: DateTime, override val id: String) : Message(id)
 }
+
+data class MessageSection(
+    val date: DateTime,
+    val messages: List<Message>
+)
 
 data class ChatState(
     val messages: List<Message>,
@@ -32,7 +38,7 @@ class ChatViewModel(
 ) :
     BaseStatefulViewModel<ChatState, ChatAction, Unit>(
         ChatState(
-            mockChatCreator.getTextMessages(2).sortedBy { it.time }.mapMessages(),
+            mockChatCreator.getTextMessages(20).sortedBy { it.time }.mapMessages(),
             false
         )
     ) {
@@ -73,7 +79,7 @@ fun List<Message.TextMessage>.mapMessages(): List<Message> {
 }
 
 fun List<Message>.addMessage(text: String): List<Message> {
-    val message = Message.TextMessage(text, DateTime.now(), UUID.randomUUID().toString())
+    val message = Message.TextMessage(true, text, DateTime.now(), UUID.randomUUID().toString())
     val last = this.lastOrNull { it is Message.TextMessage } as? Message.TextMessage
         ?: return listOf(message)
     val result = this.toMutableList()

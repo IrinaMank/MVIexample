@@ -45,7 +45,7 @@ class ChatFragment : BaseFragment<ChatViewModel>() {
             chatRecyclerView.itemAnimator = DefaultItemAnimator()
             fragmentViewModel.getStateRelay().observe(this@ChatFragment as LifecycleOwner,
                 Observer<ChatState> {
-                    adapter.setItems(it.messages, true)
+                    adapter.setItems(it.messages)
                     if (it.shouldScrollToEnd) {
                         layoutManager.scrollToPosition(adapter.itemCount - 1)
                     }

@@ -112,4 +112,6 @@ ext.lib = [
         mviCore                  : "com.github.badoo.mvicore:mvicore:1.2.4",
         mviCoreAndroid           : "com.github.badoo.mvicore:mvicore-android:1.2.4",
         mviCoreWatcher           : "com.github.badoo.mvicore:mvicore-diff:1.2.4"
+
+
 ]
