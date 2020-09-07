@@ -1,8 +1,11 @@
 package com.mankovskaya.mviexample.model.feature
 
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.mankovskaya.mviexample.model.base.BaseStatefulViewModel
 import com.mankovskaya.mviexample.model.base.State
 import com.mankovskaya.mviexample.model.base.StateReducer
+import de.hdodenhof.circleimageview.CircleImageView
 import org.joda.time.DateTime
 import org.joda.time.Minutes
 import java.util.*
@@ -13,15 +16,15 @@ sealed class Message(open val id: String) {
         val isMine: Boolean,
         val text: String,
         val time: DateTime,
+        val owner: User,
         override val id: String
     ) : Message(id)
 
     data class DateMessage(val date: DateTime, override val id: String) : Message(id)
 }
 
-data class MessageSection(
-    val date: DateTime,
-    val messages: List<Message>
+data class User(
+    val avatar: String
 )
 
 data class ChatState(
@@ -38,18 +41,20 @@ class ChatViewModel(
 ) :
     BaseStatefulViewModel<ChatState, ChatAction, Unit>(
         ChatState(
-            mockChatCreator.getTextMessages(20).sortedBy { it.time }.mapMessages(),
+            mockChatCreator.getTextMessages(200).sortedBy { it.time }.mapMessages(),
             false
         )
     ) {
     override val stateReducer = ChatReducer()
+
+    private val user = User("https://picsum.photos/id/237/200/300")
 
     inner class ChatReducer : StateReducer<ChatState, ChatAction>() {
         override fun reduce(state: ChatState, action: ChatAction): ChatState {
             return when (action) {
                 is ChatAction.MessageSent -> {
                     state.copy(
-                        messages = state.messages.addMessage(action.text),
+                        messages = state.messages.addMessage(action.text, user),
                         shouldScrollToEnd = true
                     )
                 }
@@ -78,8 +83,9 @@ fun List<Message.TextMessage>.mapMessages(): List<Message> {
     return result
 }
 
-fun List<Message>.addMessage(text: String): List<Message> {
-    val message = Message.TextMessage(true, text, DateTime.now(), UUID.randomUUID().toString())
+fun List<Message>.addMessage(text: String, user: User): List<Message> {
+    val message =
+        Message.TextMessage(true, text, DateTime.now(), user, UUID.randomUUID().toString())
     val last = this.lastOrNull { it is Message.TextMessage } as? Message.TextMessage
         ?: return listOf(message)
     val result = this.toMutableList()
@@ -90,4 +96,13 @@ fun List<Message>.addMessage(text: String): List<Message> {
         result.add(message)
     }
     return result
+
+}
+
+@BindingAdapter("app:imgUrl")
+fun setProfilePicture(imageView: CircleImageView, imgUrl: String) {
+    Glide.with(imageView.context)
+        .load(imgUrl)
+        .dontAnimate()
+        .into(imageView)
 }

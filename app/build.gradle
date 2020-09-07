@@ -119,8 +119,6 @@ dependencies {
     implementation lib.rxRelay2
 
     /* Useful libraries */
-    implementation lib.glide
-    kapt lib.glide
     implementation lib.joda
     implementation lib.noveoPreferencesRx2
 
@@ -155,4 +153,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta8'
 
     implementation "androidx.paging:paging-runtime:2.1.2" // For Kotlin use paging-runtime-ktx
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation "com.github.bumptech.glide:glide:4.10.0"
+    kapt "com.github.bumptech.glide:glide:4.10.0"
 }

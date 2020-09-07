@@ -9,10 +9,24 @@ class MockChatCreator {
 
     fun getTextMessages(count: Int): List<Message.TextMessage> {
         return generateSequence {
+            val isMine = Random.nextBoolean()
+            val randomUser = Random.nextBoolean()
+
+            val user = when {
+                isMine -> "https://picsum.photos/id/237/200/300"
+                randomUser -> "https://picsum.photos/id/1023/200/300"
+                else -> "https://picsum.photos/id/1014/200/300"
+            }
+            val text = when {
+                isMine -> "Mine text"
+                randomUser -> "green"
+                else -> "blue"
+            }
             Message.TextMessage(
-                Random.nextBoolean(),
-                getRandomString(Random.nextInt(100)),
+                isMine,
+                text,
                 DateTime.now().plusMinutes(Random.nextInt(0, 100)),
+                User(user),
                 UUID.randomUUID().toString()
             )
         }.take(count).toList()
@@ -25,6 +39,7 @@ class MockChatCreator {
                 Random.nextBoolean(),
                 count.toString(),
                 DateTime.now().plusMinutes(count),
+                User("https://picsum.photos/200/300"),
                 UUID.randomUUID().toString()
             ).also { count-- }
         }.take(pageNumber * pageSize).toList()
