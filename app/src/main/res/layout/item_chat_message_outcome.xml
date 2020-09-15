@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.mankovskaya.mviexample.model.feature.Message.TextMessage" />
+            type="com.mankovskaya.mviexample.model.data.chat.Message.TextMessage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

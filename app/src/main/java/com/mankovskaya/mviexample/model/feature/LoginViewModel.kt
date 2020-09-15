@@ -1,6 +1,7 @@
 package com.mankovskaya.mviexample.model.feature
 
-import com.mankovskaya.mviexample.model.base.*
+import com.mankovskaya.mviexample.core.mvvm.BaseStatefulViewModel
+import com.mankovskaya.mviexample.core.mvvm.StateReducer
 import com.mankovskaya.mviexample.model.mock.AuthMockService
 import com.mankovskaya.mviexample.ui.widget.ErrorState
 import com.mankovskaya.mviexample.ui.widget.StateAction
@@ -11,13 +12,13 @@ data class LoginState(
     val emailError: String?,
     val emailCorrect: Boolean,
     val password: String?
-) : State
+)
 
-sealed class LoginEvent : Event {
+sealed class LoginEvent {
     data class Toast(val message: String) : LoginEvent()
 }
 
-sealed class LoginAction : Action {
+sealed class LoginAction {
     data class EmailChanged(val email: String) : LoginAction()
     object EmailInputFinished : LoginAction()
     data class PasswordChanged(val password: String) : LoginAction()

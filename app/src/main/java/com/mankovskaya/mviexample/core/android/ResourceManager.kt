@@ -1,4 +1,4 @@
-package com.mankovskaya.mviexample.model.base
+package com.mankovskaya.mviexample.core.android
 
 import android.content.Context
 import androidx.annotation.StringRes

@@ -1,4 +1,4 @@
-package com.mankovskaya.mviexample.model.base
+package com.mankovskaya.mviexample.core.mvvm
 
 import android.util.ArraySet
 import androidx.annotation.MainThread
@@ -12,14 +12,20 @@ open class LiveEvent<T> : MediatorLiveData<T>() {
 
     @MainThread
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
-        val wrapper = ObserverWrapper(observer)
+        val wrapper =
+            ObserverWrapper(
+                observer
+            )
         observers.add(wrapper)
         super.observe(owner, wrapper)
     }
 
     @MainThread
     override fun observeForever(observer: Observer<in T>) {
-        val wrapper = ObserverWrapper(observer)
+        val wrapper =
+            ObserverWrapper(
+                observer
+            )
         observers.add(wrapper)
         super.observeForever(wrapper)
     }

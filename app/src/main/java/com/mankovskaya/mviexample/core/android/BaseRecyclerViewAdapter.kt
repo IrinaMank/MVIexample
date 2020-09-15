@@ -1,4 +1,4 @@
-package com.mankovskaya.mviexample.model.base
+package com.mankovskaya.mviexample.core.android
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

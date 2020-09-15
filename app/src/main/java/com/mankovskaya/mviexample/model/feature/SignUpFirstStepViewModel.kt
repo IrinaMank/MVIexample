@@ -1,10 +1,11 @@
 package com.mankovskaya.mviexample.model.feature
 
 import com.mankovskaya.mviexample.R
-import com.mankovskaya.mviexample.model.base.BaseStatefulViewModel
-import com.mankovskaya.mviexample.model.base.ResourceManager
-import com.mankovskaya.mviexample.model.base.StateReducer
+import com.mankovskaya.mviexample.core.android.ResourceManager
+import com.mankovskaya.mviexample.core.mvvm.BaseStatefulViewModel
+import com.mankovskaya.mviexample.core.mvvm.StateReducer
 import com.mankovskaya.mviexample.model.mock.AuthMockService
+import com.mankovskaya.mviexample.model.mock.MockConstants.PASSWORD_MIN_LENGTH
 import com.mankovskaya.mviexample.ui.widget.ErrorState
 import com.mankovskaya.mviexample.ui.widget.StateAction
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -107,7 +108,6 @@ class SignUpFirstStepViewModel(
 
     private val emailRegex =
         "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
-    private val passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
 
     private fun validateEmail(email: String?): Boolean =
         email?.matches(Regex.fromLiteral(emailRegex)) ?: false
@@ -115,7 +115,7 @@ class SignUpFirstStepViewModel(
     private fun validatePassword(password: String?): PasswordError? =
         when {
             password == null || password.isBlank() -> PasswordError.PasswordEmpty
-            password.length < 8 -> PasswordError.PasswordTooShort
+            password.length < PASSWORD_MIN_LENGTH -> PasswordError.PasswordTooShort
             !password.matches(Regex.fromLiteral("^(?=.*[A-Za-z])")) -> PasswordError.PasswordNoLetters
             !password.matches(Regex.fromLiteral("(?=.*?[0-9])")) -> PasswordError.PasswordNoNumbers
             else -> null

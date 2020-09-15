@@ -1,7 +1,7 @@
 package com.mankovskaya.mviexample.ui.chat
 
 import androidx.recyclerview.widget.DiffUtil
-import com.mankovskaya.mviexample.model.feature.Message
+import com.mankovskaya.mviexample.model.data.chat.Message
 
 
 class MessageDiffUtil(

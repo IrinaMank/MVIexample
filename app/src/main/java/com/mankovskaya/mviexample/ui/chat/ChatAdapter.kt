@@ -2,8 +2,8 @@ package com.mankovskaya.mviexample.ui.chat
 
 import androidx.recyclerview.widget.DiffUtil
 import com.mankovskaya.mviexample.R
-import com.mankovskaya.mviexample.model.base.BaseRecyclerViewAdapter
-import com.mankovskaya.mviexample.model.feature.Message
+import com.mankovskaya.mviexample.core.android.BaseRecyclerViewAdapter
+import com.mankovskaya.mviexample.model.data.chat.Message
 
 class ChatAdapter : BaseRecyclerViewAdapter() {
 
@@ -22,7 +22,7 @@ class ChatAdapter : BaseRecyclerViewAdapter() {
 
     override fun getItemCount() = items.size
 
-    open fun setItems(items: List<Message>) {
+    fun setItems(items: List<Message>) {
         val oldItems = this.items.toList()
         clear()
         addItems(items, false)
@@ -30,9 +30,9 @@ class ChatAdapter : BaseRecyclerViewAdapter() {
         diffResult.dispatchUpdatesTo(this)
     }
 
-    open fun clear() = items.clear()
+    fun clear() = items.clear()
 
-    open fun addItems(newItems: List<Message>, notify: Boolean) {
+    fun addItems(newItems: List<Message>, notify: Boolean) {
         if (newItems.isNotEmpty()) items.addAll(newItems)
         if (notify) notifyDataSetChanged()
     }

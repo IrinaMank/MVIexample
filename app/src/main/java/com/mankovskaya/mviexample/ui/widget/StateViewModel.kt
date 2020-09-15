@@ -1,21 +1,19 @@
 package com.mankovskaya.mviexample.ui.widget
 
-import com.mankovskaya.mviexample.model.base.Action
-import com.mankovskaya.mviexample.model.base.BaseViewModel
-import com.mankovskaya.mviexample.model.base.State
-import com.mankovskaya.mviexample.model.base.StateReducer
+import com.mankovskaya.mviexample.core.mvvm.BaseViewModel
+import com.mankovskaya.mviexample.core.mvvm.StateReducer
 
 data class ProgressState(
     val isLoading: Boolean,
     val error: ErrorState?
-) : State
+)
 
 data class ErrorState(
     val message: String,
     val buttonAction: (() -> Unit)?
 )
 
-sealed class StateAction : Action {
+sealed class StateAction {
     object ProgressStarted : StateAction()
     object ProgressSuccess : StateAction()
     data class ErrorOccurred(val error: ErrorState) : StateAction()

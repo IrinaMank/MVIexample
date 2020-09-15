@@ -1,4 +1,4 @@
-package com.mankovskaya.mviexample.ui
+package com.mankovskaya.mviexample.ui.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.textfield.TextInputLayout
 import com.mankovskaya.mviexample.R
+import com.mankovskaya.mviexample.core.android.BaseFragment
 import com.mankovskaya.mviexample.databinding.FragmentLoginBinding
-import com.mankovskaya.mviexample.model.base.BaseFragment
 import com.mankovskaya.mviexample.model.feature.LoginAction
 import com.mankovskaya.mviexample.model.feature.LoginEvent
 import com.mankovskaya.mviexample.model.feature.LoginViewModel
@@ -57,9 +55,4 @@ class LoginFragment : BaseFragment<LoginViewModel>() {
         return view
     }
 
-}
-
-@BindingAdapter("app:errorText")
-fun setErrorMessage(view: TextInputLayout, errorMessage: String?) {
-    view.error = errorMessage
 }

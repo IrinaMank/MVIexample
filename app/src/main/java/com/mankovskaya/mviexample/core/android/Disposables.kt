@@ -1,4 +1,4 @@
-package com.mankovskaya.mviexample.model.base
+package com.mankovskaya.mviexample.core.android
 
 import io.reactivex.disposables.Disposable
 

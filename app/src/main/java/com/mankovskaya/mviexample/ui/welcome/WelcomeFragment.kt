@@ -1,4 +1,4 @@
-package com.mankovskaya.mviexample.ui
+package com.mankovskaya.mviexample.ui.welcome
 
 import android.os.Bundle
 import android.view.LayoutInflater

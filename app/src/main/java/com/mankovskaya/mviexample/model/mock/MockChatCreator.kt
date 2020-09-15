@@ -1,6 +1,8 @@
-package com.mankovskaya.mviexample.model.feature
+package com.mankovskaya.mviexample.model.mock
 
 import androidx.lifecycle.MutableLiveData
+import com.mankovskaya.mviexample.model.data.chat.Message
+import com.mankovskaya.mviexample.model.data.common.User
 import org.joda.time.DateTime
 import java.util.*
 import kotlin.random.Random

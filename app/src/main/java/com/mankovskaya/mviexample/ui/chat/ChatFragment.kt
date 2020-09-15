@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankovskaya.mviexample.R
+import com.mankovskaya.mviexample.core.android.BaseFragment
 import com.mankovskaya.mviexample.databinding.FragmentChatBinding
-import com.mankovskaya.mviexample.model.base.BaseFragment
 import com.mankovskaya.mviexample.model.feature.ChatAction
 import com.mankovskaya.mviexample.model.feature.ChatState
 import com.mankovskaya.mviexample.model.feature.ChatViewModel
